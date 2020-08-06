@@ -40,8 +40,10 @@ def dGetTimestamps(filename):
 
 
 def madmomSynthesize(fileName,labelFilename):
+    print("madmomSynthesize")
     mergedFilePath = os.path.splitext(fileName)[0]+'-madmom-merged.mp3'
     dMergedFilePath = os.path.splitext(fileName)[0]+'-d-merged.mp3'
+    print("downbeatTrackingProcessor =")
     downbeatTrackingProcessor = madmom.features.downbeats.DBNDownBeatTrackingProcessor(beats_per_bar=[4],fps=100)
     
     songProcessor = madmom.features.downbeats.RNNDownBeatProcessor()(fileName)
@@ -56,8 +58,8 @@ def madmomSynthesize(fileName,labelFilename):
     original = AudioSegment.from_file(fileName)
     madmomMerged = AudioSegment.empty()
 
-    click = AudioSegment.from_file('./MetroBeat1-right.wav')
-    firstBeat = AudioSegment.from_file('./MetroBeat2-right.wav')
+    click = AudioSegment.from_file('./downbeat.wav')
+    firstBeat = AudioSegment.from_file('./measure.wav')
     numberOfTimestamps = len(downbeatTimestamps)
     #print(numberOfTimestamps)
     timestampIndex = 0
@@ -78,8 +80,8 @@ def madmomSynthesize(fileName,labelFilename):
         timestampIndex += 1
 
     #madmomMerged.export(mergedFilePath,format='wav')
-    dClick = AudioSegment.from_file('./MetroBeat1-left.wav')
-    dFirstBeat = AudioSegment.from_file('./MetroBeat2-left.wav')
+    dClick = AudioSegment.from_file('./downbeat.wav')
+    dFirstBeat = AudioSegment.from_file('./measure.wav')
     dTimestamps, dNumbers = dGetTimestamps(labelFilename)
     dModified = AudioSegment.empty()
     numberOfTimestamps = len(dTimestamps)
@@ -91,7 +93,7 @@ def madmomSynthesize(fileName,labelFilename):
             break
         begin = timestamp*1000.0
         end = dTimestamps[timestampIndex+1]*1000.0
-        measure = madmomMerged[begin:end]
+        measure = original[begin:end]
         if dNumbers[timestampIndex] == 1:
             merged = measure.overlay(dFirstBeat)
         else:
@@ -111,7 +113,7 @@ allPaths = glob.glob('./dd/*.mp3')
 allLabelPaths = glob.glob('./dd/labels/*.txt')
 zippedPaths = zip(allPaths,allLabelPaths)
 #print(list(zippedPaths))
-for wavPath,labelPath in zippedPaths:
+for wavPath,labelPath in list(zippedPaths):
     print(wavPath,labelPath)
     madmomSynthesize(wavPath,labelPath)
     print(wavPath)
