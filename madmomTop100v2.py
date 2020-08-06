@@ -79,7 +79,7 @@ def madmomSynthesize(fileName,labelFilename):
         madmomMerged += merged
         timestampIndex += 1
 
-    #madmomMerged.export(mergedFilePath,format='wav')
+    madmomMerged.export(mergedFilePath,format='wav')
     dClick = AudioSegment.from_file('./downbeat.wav')
     dFirstBeat = AudioSegment.from_file('./measure.wav')
     dTimestamps, dNumbers = dGetTimestamps(labelFilename)
