@@ -20,8 +20,10 @@ def mergeTracks(trackPaths, filename):
 
 
 def mergeAllTracksInFolders(folder):
-    paths = glob.glob(folder + "/*/")
+    paths = [root+'/' for root, dirs, files in os.walk(folder) if not dirs]
+    globPaths = glob.glob(folder + "/*/")
     # print(folder, paths)
+    print(paths,globPaths)
     for path in paths:
         allPaths = glob.glob(path + "*.wav")
         # print(path + "/*.wav")
