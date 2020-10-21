@@ -30,8 +30,8 @@ def mergeAllTracksInFolders(folder):
         # print(allPaths)
         dirname = os.path.dirname(path)
         mergeTracks(allPaths, dirname + "-master")
-        mergeTracksWithPattern(["Vox"], allPaths, dirname + "-vocal")
-        mergeTracksWithoutPattern(["Vox"], allPaths, dirname + "-instrumental")
+        mergeTracksWithPattern(["Vox","VOX"], allPaths, dirname + "-vocal")
+        mergeTracksWithoutPattern(["Vox","VOX"], allPaths, dirname + "-instrumental")
         print("merged")
     return True
 
